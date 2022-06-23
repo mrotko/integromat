@@ -1,5 +1,7 @@
 package pl.mrotko.integromat;
 
+import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import pl.mrotko.integromat.core.config.AppConfig;
 import pl.mrotko.integromat.core.webclient.JavaWebClient;
 import pl.mrotko.integromat.integration.mbank.auth.MbankCookieAuth;
@@ -8,17 +10,16 @@ import pl.mrotko.integromat.integration.mbank.service.transactions.Transactions;
 import pl.mrotko.integromat.integration.mbank.service.transactions.TransactionsSearchQuery;
 import pl.mrotko.integromat.integration.spotify.auth.AuthorizationCodeFlowAuth;
 import pl.mrotko.integromat.integration.spotify.core.SpotifyConfig;
-import pl.mrotko.integromat.integration.spotify.service.shows.ShowsService;
 import pl.mrotko.integromat.integration.spotify.service.shows.SearchQueryParams;
+import pl.mrotko.integromat.integration.spotify.service.shows.ShowsService;
 import pl.mrotko.integromat.integration.todoist.auth.TodoistTokenAuth;
 import pl.mrotko.integromat.integration.todoist.core.TodoistConfig;
-import pl.mrotko.integromat.integration.todoist.model.GetActiveTasksQuery;
-import pl.mrotko.integromat.integration.todoist.model.Task;
-import pl.mrotko.integromat.integration.todoist.service.TasksService;
+import pl.mrotko.integromat.integration.todoist.service.tasks.TaskRequestBody;
+import pl.mrotko.integromat.integration.todoist.service.tasks.TasksService;
 
 import java.net.http.HttpClient;
-import java.util.List;
 
+@Log4j2
 public class App {
     public static void main(String[] args) {
         HttpClient client = HttpClient.newBuilder()
@@ -29,20 +30,47 @@ public class App {
         todoist(client);
     }
 
+    @SneakyThrows
     private static void todoist(HttpClient client) {
         var config = new TodoistConfig(AppConfig.CONFIG);
 
         var todoistTokenAuth = new TodoistTokenAuth(config);
         var todoistWebclient = new JavaWebClient(client, todoistTokenAuth);
 
-        var todoistService = new TasksService(todoistWebclient, config);
+        var taskService = new TasksService(todoistWebclient, config);
+//        var projectsService = new ProjectsService(todoistWebclient, config);
 
-        GetActiveTasksQuery query = new GetActiveTasksQuery();
-        query.setProjectId(2278775775L);
-        query.getIds().add(4926373587L);
-        query.getIds().add(4926373588L);
-        List<Task> activeTasks = todoistService.getTasks(query);
-        System.out.println("activeTasks = " + activeTasks);
+
+        var task = taskService.createTask(new TaskRequestBody().setContent("test 123333")).get();
+        log.debug(task.toString());
+
+        var getTask = taskService.getActiveTask(task.getId()).get();
+        log.debug(getTask.toString());
+
+        var updateTask = taskService.updateTask(getTask.getId(), new TaskRequestBody().setContent("bla bla")).get();
+        taskService.closeTask(getTask.getId()).get();
+        taskService.reopenTask(getTask.getId()).get();
+        taskService.deleteTask(getTask.getId()).get();
+
+//        var projects = projectsService.getAllProjects();
+//        System.out.println("projects = " + projects);
+
+//        var test = projectsService.createProject(new CreateProjectBody().setName("test"));
+//        System.out.println("test = " + test);
+
+//        var project = projectsService.getProject(2175626018L);
+
+//        log.info(project.get().toString());
+//        System.out.println("project = " + project.get().toString());
+
+//        var unused = projectsService.deleteProject(2293806550L);
+
+//        GetActiveTasksQuery query = new GetActiveTasksQuery();
+//        query.setProjectId(2278775775L);
+//        query.getIds().add(4926373587L);
+//        query.getIds().add(4926373588L);
+//        List<Task> activeTasks = todoistService.getTasks(query);
+//        System.out.println("activeTasks = " + activeTasks);
     }
 
     private static void spotify(HttpClient client) {
@@ -55,6 +83,7 @@ public class App {
         var shows = service.getUserSavedShowsResponse(new SearchQueryParams());
 
         var show = shows.getItems().get(0);
+        log.info(show.toString());
         System.out.println("show = " + show);
 
         var episodes = service.getShowEpisodes(show.getShow().getId(), new SearchQueryParams());

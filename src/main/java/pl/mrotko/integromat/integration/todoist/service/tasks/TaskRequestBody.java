@@ -1,7 +1,8 @@
-package pl.mrotko.integromat.integration.todoist.model;
+package pl.mrotko.integromat.integration.todoist.service.tasks;
 
 import lombok.Data;
 import lombok.SneakyThrows;
+import lombok.experimental.Accessors;
 import pl.mrotko.integromat.core.webclient.request.RequestBody;
 import pl.mrotko.integromat.integration.todoist.tools.JsonMapper;
 
@@ -12,7 +13,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Data
-public class AddTaskBody implements RequestBody {
+@Accessors(chain = true)
+public class TaskRequestBody implements RequestBody {
 
     private String content;
 

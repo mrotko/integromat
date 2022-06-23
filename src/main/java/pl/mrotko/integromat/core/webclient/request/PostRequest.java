@@ -13,7 +13,12 @@ public class PostRequest<REQ extends RequestBody, RES, T> extends Request<REQ, R
 
     @Override
     public HttpRequest toHttpRequest() {
-        getBody().validate();
-        return createBuilder().POST(getBody().toBodyPublisher()).build();
+        var body = getBody();
+        if (body == null) {
+            return createBuilder().POST(HttpRequest.BodyPublishers.noBody()).build();
+        }
+
+        body.validate();
+        return createBuilder().POST(body.toBodyPublisher()).build();
     }
 }

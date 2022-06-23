@@ -1,14 +1,16 @@
-package pl.mrotko.integromat.integration.todoist.model;
+package pl.mrotko.integromat.integration.todoist.service.tasks;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import pl.mrotko.integromat.core.webclient.request.RequestQueryParams;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Accessors(chain = true)
 public class GetActiveTasksQuery implements RequestQueryParams {
 
     private Long projectId;
