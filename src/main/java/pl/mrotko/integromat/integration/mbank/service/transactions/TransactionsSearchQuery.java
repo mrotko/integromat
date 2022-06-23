@@ -3,6 +3,7 @@ package pl.mrotko.integromat.integration.mbank.service.transactions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import pl.mrotko.integromat.core.webclient.request.RequestQueryParams;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Data
+@Accessors(chain = true)
 public class TransactionsSearchQuery implements RequestQueryParams {
 
     private List<Long> productIds = Collections.emptyList();

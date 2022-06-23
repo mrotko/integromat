@@ -50,12 +50,12 @@ public class ProjectsService implements IProjectService {
 
     public CompletableFuture<Void> updateProject(long id, UpdateProjectBody body) {
         var request = new PostRequest<>(config.getBasePath(), "/projects/" + id, body, ResponseBodyMapper.EMPTY_RESPONSE);
-        return webClient.sendAsync(request).thenApply(r -> null);
+        return webClient.sendAsync(request).thenApply(Response::body);
     }
 
     @Override
     public CompletableFuture<Void> deleteProject(long id) {
         var request = new DeleteRequest<>(config.getBasePath(), "/projects/" + id, ResponseBodyMapper.EMPTY_RESPONSE);
-        return webClient.sendAsync(request).thenApply(r -> null);
+        return webClient.sendAsync(request).thenApply(Response::body);
     }
 }

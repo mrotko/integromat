@@ -4,11 +4,13 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 import pl.mrotko.integromat.core.webclient.request.RequestQueryParams;
 import pl.mrotko.integromat.integration.utils.ValidationUtils;
 
 @Data
+@Accessors(chain = true)
 public class SearchQueryParams implements RequestQueryParams {
 
     @Size(min = 0, max = 50)

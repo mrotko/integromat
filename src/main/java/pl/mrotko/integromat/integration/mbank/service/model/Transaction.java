@@ -2,11 +2,13 @@ package pl.mrotko.integromat.integration.mbank.service.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@Accessors(chain = true)
 public class Transaction {
 
     private Long pfmId;

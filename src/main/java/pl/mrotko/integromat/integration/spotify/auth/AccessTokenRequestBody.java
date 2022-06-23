@@ -1,12 +1,14 @@
 package pl.mrotko.integromat.integration.spotify.auth;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import pl.mrotko.integromat.core.webclient.request.RequestBody;
 
 import java.net.http.HttpRequest;
 import java.util.StringJoiner;
 
 @Data
+@Accessors(chain = true)
 public class AccessTokenRequestBody implements RequestBody {
 
     private String grantType;

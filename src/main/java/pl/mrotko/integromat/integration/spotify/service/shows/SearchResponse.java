@@ -1,10 +1,12 @@
 package pl.mrotko.integromat.integration.spotify.service.shows;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
 @Data
+@Accessors(chain = true)
 public class SearchResponse<T> {
 
     private String href;
