@@ -14,8 +14,10 @@ import pl.mrotko.integromat.integration.spotify.service.shows.SearchQueryParams;
 import pl.mrotko.integromat.integration.spotify.service.shows.ShowsService;
 import pl.mrotko.integromat.integration.todoist.auth.TodoistTokenAuth;
 import pl.mrotko.integromat.integration.todoist.core.TodoistConfig;
+import pl.mrotko.integromat.integration.todoist.service.lables.LabelRequestBody;
+import pl.mrotko.integromat.integration.todoist.service.lables.LabelsController;
 import pl.mrotko.integromat.integration.todoist.service.tasks.TaskRequestBody;
-import pl.mrotko.integromat.integration.todoist.service.tasks.TasksService;
+import pl.mrotko.integromat.integration.todoist.service.tasks.TasksController;
 
 import java.net.http.HttpClient;
 
@@ -37,33 +39,55 @@ public class App {
         var todoistTokenAuth = new TodoistTokenAuth(config);
         var todoistWebclient = new JavaWebClient(client, todoistTokenAuth);
 
-        var taskService = new TasksService(todoistWebclient, config);
-//        var projectsService = new ProjectsService(todoistWebclient, config);
+        var tasksController = new TasksController(todoistWebclient, config);
+        var labelsController = new LabelsController(todoistWebclient, config);
+//        var projectsController = new ProjectsService(todoistWebclient, config);
+
+        var label = labelsController.createLabel(new LabelRequestBody().setName("test 123333")).get();
+        log.debug(label.toString());
+
+        var getLabel = labelsController.getLabel(label.getId()).get();
+        log.debug(getLabel.toString());
+
+        var updateTask = labelsController.updateLabel(getLabel.getId(), new LabelRequestBody().setName("test 123333")).get();
+//        labelsController.deleteLabel(getLabel.getId()).get();
 
 
-        var task = taskService.createTask(new TaskRequestBody().setContent("test 123333")).get();
-        log.debug(task.toString());
 
-        var getTask = taskService.getActiveTask(task.getId()).get();
-        log.debug(getTask.toString());
+//        var task = tasksController.createTask(new TaskRequestBody().setContent("test 123333")).get();
+//        log.debug(task.toString());
+//
+//        var getTask = tasksController.getActiveTask(task.getId()).get();
+//        log.debug(getTask.toString());
+//
+//        var updateTask = tasksController.updateTask(getTask.getId(), new TaskRequestBody().setContent("bla bla")).get();
+//        tasksController.closeTask(getTask.getId()).get();
+//        tasksController.reopenTask(getTask.getId()).get();
+//        tasksController.deleteTask(getTask.getId()).get();
 
-        var updateTask = taskService.updateTask(getTask.getId(), new TaskRequestBody().setContent("bla bla")).get();
-        taskService.closeTask(getTask.getId()).get();
-        taskService.reopenTask(getTask.getId()).get();
-        taskService.deleteTask(getTask.getId()).get();
+//        var task = tasksController.createTask(new TaskRequestBody().setContent("test 123333")).get();
+//        log.debug(task.toString());
+//
+//        var getTask = tasksController.getActiveTask(task.getId()).get();
+//        log.debug(getTask.toString());
 
-//        var projects = projectsService.getAllProjects();
+//        var updateTask = tasksController.updateTask(getTask.getId(), new TaskRequestBody().setContent("bla bla")).get();
+//        tasksController.closeTask(getTask.getId()).get();
+//        tasksController.reopenTask(getTask.getId()).get();
+//        tasksController.deleteTask(getTask.getId()).get();
+
+//        var projects = projectsController.getAllProjects();
 //        System.out.println("projects = " + projects);
 
-//        var test = projectsService.createProject(new CreateProjectBody().setName("test"));
+//        var test = projectsController.createProject(new CreateProjectBody().setName("test"));
 //        System.out.println("test = " + test);
 
-//        var project = projectsService.getProject(2175626018L);
+//        var project = projectsController.getProject(2175626018L);
 
 //        log.info(project.get().toString());
 //        System.out.println("project = " + project.get().toString());
 
-//        var unused = projectsService.deleteProject(2293806550L);
+//        var unused = projectsController.deleteProject(2293806550L);
 
 //        GetActiveTasksQuery query = new GetActiveTasksQuery();
 //        query.setProjectId(2278775775L);

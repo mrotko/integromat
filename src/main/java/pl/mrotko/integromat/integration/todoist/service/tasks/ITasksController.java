@@ -5,7 +5,7 @@ import pl.mrotko.integromat.integration.todoist.model.Task;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public interface ITasksService {
+public interface ITasksController {
 
     CompletableFuture<List<Task>> getActiveTasks(GetActiveTasksQuery query);
 

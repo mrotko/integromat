@@ -5,7 +5,7 @@ import pl.mrotko.integromat.integration.todoist.model.Project;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public interface IProjectService {
+public interface IProjectController {
 
     CompletableFuture<List<Project>> getAllProjects();
 

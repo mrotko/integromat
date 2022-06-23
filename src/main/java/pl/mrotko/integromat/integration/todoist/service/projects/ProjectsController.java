@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
-public class ProjectsService implements IProjectService {
+public class ProjectsController implements IProjectController {
 
     private final WebClient webClient;
 
