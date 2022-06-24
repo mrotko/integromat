@@ -1,9 +1,9 @@
 package pl.mrotko.integromat.integration.mbank.service.transactions;
 
 import lombok.RequiredArgsConstructor;
-import pl.mrotko.integromat.core.webclient.WebClient;
-import pl.mrotko.integromat.core.webclient.request.GetRequest;
-import pl.mrotko.integromat.core.webclient.response.JsonBodyMapper;
+import pl.mrotko.integromat.webclient.WebClient;
+import pl.mrotko.integromat.webclient.request.GetRequest;
+import pl.mrotko.integromat.webclient.response.JsonBodyMapper;
 import pl.mrotko.integromat.integration.mbank.core.MbankConfig;
 import pl.mrotko.integromat.integration.mbank.core.MbankJsonMapper;
 

@@ -1,9 +1,9 @@
 package pl.mrotko.integromat.integration.mbank.auth;
 
 import org.apache.commons.lang3.tuple.Pair;
-import pl.mrotko.integromat.core.webclient.Authentication;
-import pl.mrotko.integromat.core.webclient.HeadersContainer;
-import pl.mrotko.integromat.core.webclient.auth.CookieAuth;
+import pl.mrotko.integromat.webclient.auth.Authentication;
+import pl.mrotko.integromat.webclient.request.HeadersContainer;
+import pl.mrotko.integromat.webclient.auth.CookieAuth;
 import pl.mrotko.integromat.integration.mbank.core.MbankConfig;
 
 public class MbankCookieAuth implements Authentication {

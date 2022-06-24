@@ -1,8 +1,8 @@
 package pl.mrotko.integromat.integration.spotify.auth;
 
-import pl.mrotko.integromat.core.webclient.Authentication;
-import pl.mrotko.integromat.core.webclient.HeadersContainer;
-import pl.mrotko.integromat.core.webclient.WebClient;
+import pl.mrotko.integromat.webclient.auth.Authentication;
+import pl.mrotko.integromat.webclient.request.HeadersContainer;
+import pl.mrotko.integromat.webclient.WebClient;
 import pl.mrotko.integromat.integration.spotify.core.SpotifyConfig;
 
 public class AuthorizationCodeFlowAuth implements Authentication {

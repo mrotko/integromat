@@ -4,7 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import pl.mrotko.integromat.core.webclient.request.RequestQueryParams;
+import pl.mrotko.integromat.webclient.request.RequestQueryParams;
 
 import java.time.LocalDate;
 import java.util.Collections;

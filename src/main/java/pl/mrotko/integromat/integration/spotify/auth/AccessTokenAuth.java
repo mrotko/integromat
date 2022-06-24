@@ -1,13 +1,13 @@
 package pl.mrotko.integromat.integration.spotify.auth;
 
 import lombok.RequiredArgsConstructor;
-import pl.mrotko.integromat.core.webclient.Authentication;
-import pl.mrotko.integromat.core.webclient.HeadersContainer;
-import pl.mrotko.integromat.core.webclient.WebClient;
-import pl.mrotko.integromat.core.webclient.auth.BasicAuth;
-import pl.mrotko.integromat.core.webclient.auth.BearerAuth;
-import pl.mrotko.integromat.core.webclient.request.PostRequest;
-import pl.mrotko.integromat.core.webclient.response.JsonBodyMapper;
+import pl.mrotko.integromat.webclient.auth.Authentication;
+import pl.mrotko.integromat.webclient.request.HeadersContainer;
+import pl.mrotko.integromat.webclient.WebClient;
+import pl.mrotko.integromat.webclient.auth.BasicAuth;
+import pl.mrotko.integromat.webclient.auth.BearerAuth;
+import pl.mrotko.integromat.webclient.request.PostRequest;
+import pl.mrotko.integromat.webclient.response.JsonBodyMapper;
 import pl.mrotko.integromat.integration.spotify.core.SpotifyConfig;
 import pl.mrotko.integromat.integration.todoist.tools.JsonMapper;
 

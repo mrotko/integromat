@@ -2,7 +2,7 @@ package pl.mrotko.integromat.integration.spotify.auth;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import pl.mrotko.integromat.core.webclient.request.RequestBody;
+import pl.mrotko.integromat.webclient.request.RequestBody;
 
 import java.net.http.HttpRequest;
 import java.util.StringJoiner;

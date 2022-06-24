@@ -2,24 +2,25 @@ package pl.mrotko.integromat;
 
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import pl.mrotko.integromat.core.config.AppConfig;
-import pl.mrotko.integromat.core.webclient.JavaWebClient;
+import pl.mrotko.integromat.persistence.config.DbConfig;
+import pl.mrotko.integromat.webclient.JWebClient;
 import pl.mrotko.integromat.integration.mbank.auth.MbankCookieAuth;
 import pl.mrotko.integromat.integration.mbank.core.MbankConfig;
 import pl.mrotko.integromat.integration.mbank.service.transactions.Transactions;
 import pl.mrotko.integromat.integration.mbank.service.transactions.TransactionsSearchQuery;
 import pl.mrotko.integromat.integration.spotify.auth.AuthorizationCodeFlowAuth;
 import pl.mrotko.integromat.integration.spotify.core.SpotifyConfig;
-import pl.mrotko.integromat.integration.spotify.service.shows.SearchQueryParams;
-import pl.mrotko.integromat.integration.spotify.service.shows.ShowsService;
+import pl.mrotko.integromat.integration.spotify.controller.shows.SearchQueryParams;
+import pl.mrotko.integromat.integration.spotify.controller.shows.ShowsController;
 import pl.mrotko.integromat.integration.todoist.auth.TodoistTokenAuth;
 import pl.mrotko.integromat.integration.todoist.core.TodoistConfig;
-import pl.mrotko.integromat.integration.todoist.service.lables.LabelRequestBody;
-import pl.mrotko.integromat.integration.todoist.service.lables.LabelsController;
-import pl.mrotko.integromat.integration.todoist.service.tasks.TaskRequestBody;
-import pl.mrotko.integromat.integration.todoist.service.tasks.TasksController;
+import pl.mrotko.integromat.integration.todoist.controller.lables.LabelRequestBody;
+import pl.mrotko.integromat.integration.todoist.controller.lables.LabelsController;
+import pl.mrotko.integromat.integration.todoist.controller.tasks.TasksController;
 
 import java.net.http.HttpClient;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 @Log4j2
 public class App {
@@ -27,17 +28,31 @@ public class App {
         HttpClient client = HttpClient.newBuilder()
                 .build();
 
+        jooq();
+
 //        spotify(client);
 //        mBank(client);
-        todoist(client);
+//        todoist(client);
+    }
+
+    private static void jooq() {
+
+        var config = new DbConfig(ConfigLoader.CONFIG);
+        try (Connection conn = DriverManager.getConnection(config.getUrl(), config.getUsername(), config.getPassword())) {
+            System.out.println("conn = " + conn);
+            // ...
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SneakyThrows
     private static void todoist(HttpClient client) {
-        var config = new TodoistConfig(AppConfig.CONFIG);
+        var config = new TodoistConfig(ConfigLoader.CONFIG);
 
         var todoistTokenAuth = new TodoistTokenAuth(config);
-        var todoistWebclient = new JavaWebClient(client, todoistTokenAuth);
+        var todoistWebclient = new JWebClient(client, todoistTokenAuth);
 
         var tasksController = new TasksController(todoistWebclient, config);
         var labelsController = new LabelsController(todoistWebclient, config);
@@ -98,12 +113,12 @@ public class App {
     }
 
     private static void spotify(HttpClient client) {
-        var spotifyAuthWebClient = new JavaWebClient(client);
-        var spotifyConfig = new SpotifyConfig(AppConfig.CONFIG);
+        var spotifyAuthWebClient = new JWebClient(client);
+        var spotifyConfig = new SpotifyConfig(ConfigLoader.CONFIG);
         var spotifyAuth = new AuthorizationCodeFlowAuth(spotifyAuthWebClient, spotifyConfig);
 
-        var spotifyWebClient = new JavaWebClient(client, spotifyAuth);
-        var service = new ShowsService(spotifyWebClient, spotifyConfig);
+        var spotifyWebClient = new JWebClient(client, spotifyAuth);
+        var service = new ShowsController(spotifyWebClient, spotifyConfig);
         var shows = service.getUserSavedShowsResponse(new SearchQueryParams());
 
         var show = shows.getItems().get(0);
@@ -116,10 +131,10 @@ public class App {
     }
 
     private static void mBank(HttpClient client) {
-        MbankConfig config = new MbankConfig(AppConfig.CONFIG);
+        MbankConfig config = new MbankConfig(ConfigLoader.CONFIG);
 
         var cookieAuth = new MbankCookieAuth(config);
-        var mbankClient = new JavaWebClient(client, cookieAuth);
+        var mbankClient = new JWebClient(client, cookieAuth);
         var transactions = new Transactions(mbankClient, config);
         var response = transactions.searchTransactions(new TransactionsSearchQuery());
         System.out.println("response = " + response);
